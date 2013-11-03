@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="accent">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Accent Schedule</title>
+
+    <!-- libraries -->
+    <link rel="stylesheet" href="css/lib/bootstrap.min.css">
+
+    <!-- my style -->
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/login.css">
+    <link rel="stylesheet" href="css/schedule.css">
+
+  </head>
+  <body>
+
+    <div header></div>
+
+    <div ng-view></div>
+
+    <!-- libraries -->
+    <script src="js/lib/angular.min.js"></script>
+    <script src="js/lib/jquery.min.js"></script>
+
+    <!-- main app config -->
+    <script src="js/app/main.js"></script>
+
+    <!-- controllers -->
+    <script src="js/app/controllers/header.js"></script>
+    <script src="js/app/controllers/hour-cell.js"></script>
+    <script src="js/app/controllers/schedule.js"></script>
+
+    <!-- directives -->
+    <script src="js/app/directives/events.js"></script>
+    <script src="js/app/directives/header.js"></script>
+    <script src="js/app/directives/hour-cell.js"></script>
+
+    <!-- filters -->
+    <script src="js/app/filters/phone.js"></script>
+
+    <!-- services -->
+    <script src="js/app/services/appointments.js"></script>
+    <script src="js/app/services/date.js"></script>
+    <script src="js/app/services/navigation.js"></script>
+
+  </body>
+</html>

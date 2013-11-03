@@ -1,0 +1,88 @@
+
+<table>
+  <tbody>
+    <tr>
+      <th>{{cols[0].employee}}</th>
+      <th></th>
+      <th>{{cols[1].employee}}</th>
+      <th>{{cols[2].employee}}</th>
+      <th></th>
+      <th>{{cols[3].employee}}</th>
+      <th>{{cols[4].employee}}</th>
+      <th></th>
+      <th>{{cols[5].employee}}</th>
+      <th>{{cols[6].employee}}</th>
+      <th></th>
+      <th>{{cols[7].employee}}</th>
+    </tr>
+    <tr ng-repeat="time in times" >
+      <cell-right>
+      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
+        <input class="input" ng-model="appointments[employee[0].name][time.label].label"
+                ng-change="enter(employee[0].name, time.hour, time.min)"
+                ng-enterBlur="enterBlur(employee[0].name, time.hour, time.min)"/>
+        <label class="min-label text-left" >{{time.min}}</label>
+      </td>
+    
+      <td class="hour" rowspan="4" ng-show="time.min == '00'" hour-cell></td>
+      
+      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
+        <label class="min-label text-right" >{{time.min}}</label>
+        <input class="input" ng-model="appointments[employee[1].name][time.label].label"
+                ng-change="enter(employee[1].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[1].name, time.hour, time.min)"/>
+      </td>
+
+      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
+        <input class="input" ng-model="appointments[employee[2].name][time.label].label"
+                ng-change="enter(employee[2].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[2].name, time.hour, time.min)"/>
+        <label class="min-label text-left" >{{time.min}}</label>
+      </td>
+    
+      <td class="hour" rowspan="4" ng-show="time.min == '00'" hour-cell></td>
+      
+      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
+        <label class="min-label text-right" >{{time.min}}</label>
+        <input class="input" ng-model="appointments[employee[3].name][time.label].label"
+                ng-change="enter(employee[3].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[3].name, time.hour, time.min)"/>
+      </td>
+
+      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
+        <input class="input" ng-model="appointments[employee[4].name][time.label].label"
+                ng-change="enter(employee[4].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[4].name, time.hour, time.min)"/>
+        <label class="min-label text-left" >{{time.min}}</label>
+      </td>
+    
+      <td class="hour" rowspan="4" ng-show="time.min == '00'" hour-cell></td>
+    
+      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
+        <label class="min-label text-right" >{{time.min}}</label>
+        <input class="input" ng-model="appointments[employee[5].name][time.label].label"
+                ng-change="enter(employee[5].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[5].name, time.hour, time.min)"/>
+      </td>
+
+      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
+        <input class="input" ng-model="appointments[employee[6].name][time.label].label"
+                ng-change="enter(employee[6].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[6].name, time.hour, time.min)"/>
+        <label class="min-label text-left" >{{time.min}}</label>
+      </td>
+    
+      <td class="hour" rowspan="4" ng-show="time.min == '00'" hour-cell></td>
+    
+      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
+        <label class="min-label text-right" >{{time.min}}</label>
+        <input class="input" ng-model="appointments[employee[7].name][time.label].label"
+                ng-change="enter(employee[7].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[7].name, time.hour, time.min)"/>
+      </td>   
+      
+    </tr>
+  </tbody>
+</table>
+
+{{appointments}}
