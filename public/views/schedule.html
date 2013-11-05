@@ -19,8 +19,9 @@
       <cell-right>
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
         <input class="input" ng-model="appointments[employee[0].name][time.label].label"
-                ng-change="enter(employee[0].name, time.hour, time.min)"
-                ng-enterBlur="enterBlur(employee[0].name, time.hour, time.min)"/>
+                ng-change="change(employee[0].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[0].name, time.hour, time.min)"
+                ng-click="click($event, employee[0].name, time.hour, time.min)" />
         <label class="min-label text-left" >{{time.min}}</label>
       </td>
     
@@ -29,14 +30,16 @@
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
         <label class="min-label text-right" >{{time.min}}</label>
         <input class="input" ng-model="appointments[employee[1].name][time.label].label"
-                ng-change="enter(employee[1].name, time.hour, time.min)"
-                ng-enter-blur="enterBlur(employee[1].name, time.hour, time.min)"/>
+                ng-change="change(employee[1].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[1].name, time.hour, time.min)"
+                ng-click="click($event, employee[1].name, time.hour, time.min)" />
       </td>
 
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
         <input class="input" ng-model="appointments[employee[2].name][time.label].label"
-                ng-change="enter(employee[2].name, time.hour, time.min)"
-                ng-enter-blur="enterBlur(employee[2].name, time.hour, time.min)"/>
+                ng-change="change(employee[2].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[2].name, time.hour, time.min)"
+                ng-click="click($event, employee[2].name, time.hour, time.min)" />
         <label class="min-label text-left" >{{time.min}}</label>
       </td>
     
@@ -45,14 +48,16 @@
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
         <label class="min-label text-right" >{{time.min}}</label>
         <input class="input" ng-model="appointments[employee[3].name][time.label].label"
-                ng-change="enter(employee[3].name, time.hour, time.min)"
-                ng-enter-blur="enterBlur(employee[3].name, time.hour, time.min)"/>
+                ng-change="change(employee[3].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[3].name, time.hour, time.min)"
+                ng-click="click($event, employee[3].name, time.hour, time.min)" />
       </td>
 
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
         <input class="input" ng-model="appointments[employee[4].name][time.label].label"
-                ng-change="enter(employee[4].name, time.hour, time.min)"
-                ng-enter-blur="enterBlur(employee[4].name, time.hour, time.min)"/>
+                ng-change="change(employee[4].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[4].name, time.hour, time.min)"
+                ng-click="click($event, employee[4].name, time.hour, time.min)" />
         <label class="min-label text-left" >{{time.min}}</label>
       </td>
     
@@ -61,14 +66,16 @@
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
         <label class="min-label text-right" >{{time.min}}</label>
         <input class="input" ng-model="appointments[employee[5].name][time.label].label"
-                ng-change="enter(employee[5].name, time.hour, time.min)"
-                ng-enter-blur="enterBlur(employee[5].name, time.hour, time.min)"/>
+                ng-change="change(employee[5].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[5].name, time.hour, time.min)"
+                ng-click="click($event, employee[5].name, time.hour, time.min)" />
       </td>
 
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
         <input class="input" ng-model="appointments[employee[6].name][time.label].label"
-                ng-change="enter(employee[6].name, time.hour, time.min)"
-                ng-enter-blur="enterBlur(employee[6].name, time.hour, time.min)"/>
+                ng-change="change(employee[6].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[6].name, time.hour, time.min)"
+                ng-click="click($event, employee[6].name, time.hour, time.min)" />
         <label class="min-label text-left" >{{time.min}}</label>
       </td>
     
@@ -77,12 +84,60 @@
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
         <label class="min-label text-right" >{{time.min}}</label>
         <input class="input" ng-model="appointments[employee[7].name][time.label].label"
-                ng-change="enter(employee[7].name, time.hour, time.min)"
-                ng-enter-blur="enterBlur(employee[7].name, time.hour, time.min)"/>
+                ng-change="change(employee[7].name, time.hour, time.min)"
+                ng-enter-blur="enterBlur(employee[7].name, time.hour, time.min)"
+                ng-click="click($event, employee[7].name, time.hour, time.min)" />
       </td>   
       
     </tr>
   </tbody>
 </table>
+
+<!-- Modal -->
+<div class="modal fade" id="editAppointmentModal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true" 
+     data-keyboard="true">
+
+
+<div class="modal-dialog">
+  <div class="modal-content">
+
+    <form>
+
+      <div class="modal-header text-center">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h3 class="modal-title" id="myModalLabel">Edit Appointment</h3>
+      </div>
+      <div class="modal-body">
+
+        <div style="color:red;">{{editAppointmentError}}</div>
+       
+        <label>ID: {{editAppointment.id}}</label>
+        
+        <label>Name</label>
+        <input type="text" id="modal-name" ng-model="editAppointment.label">
+        
+        <label>Employee</label>
+        <input type="text" ng-model="editAppointmentEmployees">
+        
+        <label>Time</label>
+        <input type="text" ng-model="editAppointment.time">
+        
+        <label>Blocks</label>
+        <input type="text" ng-model="editAppointment.blocks">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary" ng-click="modalSave()">Save changes</button>
+      </div>
+
+    </form>
+  </div> <!-- /.modal-content -->
+</div> <!-- /.modal-dialog -->
+
+
+
+</div>
 
 {{appointments}}

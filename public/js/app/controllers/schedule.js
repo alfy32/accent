@@ -17,47 +17,107 @@ angular.module('accent').controller('scheduleCtrl',
   		}
   	});
 
-  	$scope.enter = function(employee, hour, min) {
+  	$scope.change = function(employee, hour, min) {
   		var appointment = $scope.appointments[employee][getTimeLabel(hour, min)];
 
-  		if(appointment.taken && appointment.child) {
-        appointment.label = appointment.child ? 'x' : appointment.label;
+      if(appointment.taken && appointment.child) {
+        appointment.label = 'x';
       } else {
 
-	  		clearChildren(appointment);
+        clearChildren(appointment);
 
-	  		if(appointment.label) {
+        if(appointment.label) {
 
-		  		appointment.name = appointment.label;
-		  		appointment.time = getTimeLabel(hour, min);
-		  		appointment.employee = employee;
-		  		appointment.taken = true;
-		  		appointment.child = false;
-		  		
-		  		checkNameForBlocks(appointment);
+          appointment.name = appointment.label;
+          appointment.time = getTimeLabel(hour, min);
+          appointment.employee = [employee];
+          appointment.taken = true;
+          appointment.child = false;
 
-		  		addChildren($scope.appointments, appointment);
-		  	} else {
-		  		appointment.taken = false;
-		  	}
-		  }
+          checkNameForBlocks(appointment);
+
+          addChildren($scope.appointments, appointment);
+        } else {
+          appointment.taken = false;
+        }
+      }
   	};
 
-  	$scope.enterBlur = function(employee, hour, min) {
-  		var appointment = $scope.appointments[employee][getTimeLabel(hour, min)];
+    $scope.enterBlur = function(employee, hour, min) {
+      var appointment = $scope.appointments[employee][getTimeLabel(hour, min)];
 
       if(!appointment.child && appointment.label) {
 
-	  		appointments.save(appointment, function (data) {
-	  			if(data.success) {
-	  				appointment.id = data.id
-	  			} 
-	  		});
-	  	}
-  	};
+        appointments.save(appointment, function (data) {
+          if(data.success) {
+            appointment.id = data.id
+          } 
+        });
+      }
+    };
+
+    $scope.click = function(event, employee, hour, min) {
+      var appointment = $scope.appointments[employee][getTimeLabel(hour, min)];
+
+      if(appointment.taken) {
+        if(appointment.child) {
+          var parent = $scope.appointments[appointment.parent.employee][appointment.parent.time];
+          console.log("Taken child");
+          console.log(parent);
+
+          $scope.editAppointment = parent;
+          $scope.editAppointmentEmployees = $scope.editAppointment.employee.join(',');
+          jQuery('#editAppointmentModal').modal();
+
+        } else {
+          console.log("taken parent");
+          console.log(appointment);
+
+          $scope.editAppointment = appointment;
+          $scope.editAppointmentEmployees = $scope.editAppointment.employee.join(',');
+          jQuery('#editAppointmentModal').modal();
+        }
+      }
+    };
+
+    $scope.modalSave = function() {
+      $scope.editAppointment.name = $scope.editAppointment.label;
+      $scope.editAppointment.employee = $scope.editAppointmentEmployees.split(',');
+      $scope.editAppointment.employee = trimArray($scope.editAppointment.employee);
+
+      appointments.save($scope.editAppointment, function (data) {
+        if(data.success) {
+          $scope.editAppointment.id = data.id;
+
+          for(var key in $scope.editAppointment.employee) {
+            var employee = $scope.editAppointment.employee[key];
+            var time = $scope.editAppointment.time;
+
+            $scope.appointments[employee][time] = $scope.editAppointment;
+          }
+
+          addChildren($scope.appointments, $scope.editAppointment);
+
+          jQuery('#editAppointmentModal').modal('hide');
+        } else {
+          $scope.editAppointmentError = "Save Failed: " + data.msg;
+        }
+      });
+    };
+
+    jQuery('#editAppointmentModal').on('shown.bs.modal', function() {
+      jQuery('#modal-name').focus();
+    });
 
   }
 );
+
+function trimArray(arr) {
+  for(var key in arr) {
+    arr[key] = arr[key].trim();
+  }
+  return arr;
+}
 
 function checkNameForBlocks(appointment) {
 	var name = appointment.name;
@@ -116,28 +176,49 @@ function addChildren(appointments, appointment) {
 			if(hour > 12)
 				hour = 1;
 		}
-		var a = appointments[appointment.employee][getTimeLabel(hour, min)];
 
-		if(i > 1 && a.taken === true) {
-			alert("You are trying to overlap another appointment. I will stop at " 
-					+ i + " appointment blocks. Instead of " + blocks + ".");
-		
-			appointment.blocks = i;
-			break;
-		}
+    for(var key in appointment.employee) {
+      var employee = appointment.employee[key];
 
-		a.label = 'x';
-		a.taken = true;
-		a.child = true;
+  		var a = appointments[employee][getTimeLabel(hour, min)];
 
-		appointment.children.push(a);
+  		if(a.taken === true) {
+  			alert("You are trying to overlap another appointment. I will stop at " 
+  					+ i + " appointment blocks. Instead of " + blocks + ".");
+  		
+  			appointment.blocks = i;
+  			break;
+  		} else {
+
+    		a.label = 'x';
+    		a.taken = true;
+    		a.child = true;
+        a.parent = {
+          employee: employee,
+          time: appointment.time
+        }
+
+    		appointment.children.push(a);
+      }
+    }
 	}
 }
 
 function addAppointment(appointments, appointment) {
-	addChildren(appointments, appointment);
+  appointment.taken = true;
+  appointment.child = false;
 
-	appointments[appointment.employee][appointment.time] = appointment;
+  console.log(appointment);
+
+  for(var key in appointment.employee) {
+    var employee = appointment.employee[key];
+
+    console.log(employee);
+    
+    appointments[employee][appointment.time] = appointment;
+  }
+
+  addChildren(appointments, appointment);
 }
 
 function getTimeLabel(hour, min) {
