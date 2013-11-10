@@ -1,30 +1,54 @@
 
+
 <table>
-  <tbody>
+  <thead>
     <tr>
-      <th>{{cols[0].employee}}</th>
-      <th></th>
-      <th>{{cols[1].employee}}</th>
-      <th>{{cols[2].employee}}</th>
-      <th></th>
-      <th>{{cols[3].employee}}</th>
-      <th>{{cols[4].employee}}</th>
-      <th></th>
-      <th>{{cols[5].employee}}</th>
-      <th>{{cols[6].employee}}</th>
-      <th></th>
-      <th>{{cols[7].employee}}</th>
+      <th ng-repeat="w in who">
+        <span ng-show="w != 'hr'">{{employees[w.col].name}}</span>
+      </th>
     </tr>
-    <tr ng-repeat="time in times" >
-      <cell-right>
-      <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
-        <input class="input" ng-model="appointments[employee[0].name][time.label].label"
-                ng-change="change(employee[0].name, time.hour, time.min)"
-                ng-enter-blur="enterBlur(employee[0].name, time.hour, time.min)"
-                ng-click="click($event, employee[0].name, time.hour, time.min)" />
-        <label class="min-label text-left" >{{time.min}}</label>
+  </thead>
+  <tbody>
+    <tr ng-repeat="time in times" ng-class-odd="'td-odd'">
+
+      <td ng-repeat="w in who" 
+          ng-class="w.class"
+          class="{{time.class}}" 
+          rowspan="{{w.span}}" 
+          ng-hide="w.col == 'hr' && time.min != '00'">
+
+        <span ng-show="w.col == 'hr' && time.min == '00'">
+          <div hour-cell></div>
+        </span>
+
+        <span ng-show="w.col % 2 == 0">
+
+          <input  class="input" 
+                  ng-model="schedule[employees[w.col].name][time.label].label"
+                  ng-change="change(employees[w.col].name, time)"
+                  ng-enter-blur="enterBlur(employees[w.col].name, time)"
+                  ng-click="click(employees[w.col].name, time)" />
+          <label class="min-label text-left" >{{time.min}}</label>
+
+        </span>
+
+        <span ng-show="w.col % 2 == 1">
+
+          <label class="min-label text-right" >{{time.min}}</label>
+          <input  class="input" 
+                  ng-model="schedule[employees[w.col].name][time.label].label"
+                  ng-change="change(employees[w.col].name, time)"
+                  ng-enter-blur="enterBlur(employees[w.col].name, time)"
+                  ng-click="click(employees[w.col].name, time)" />
+
+        </span>
+
+
       </td>
-    
+<!-- 
+<span>
+      
+</span>    
       <td class="hour" rowspan="4" ng-show="time.min == '00'" hour-cell></td>
       
       <td class="td" ng-class="time.clazz" ng-class-even="'td-even'" ng-class-odd="'td-odd'">
@@ -88,31 +112,72 @@
                 ng-enter-blur="enterBlur(employee[7].name, time.hour, time.min)"
                 ng-click="click($event, employee[7].name, time.hour, time.min)" />
       </td>   
-      
+      </span> -->
     </tr>
   </tbody>
 </table>
 
-<!-- Modal -->
-<div class="modal fade" id="editAppointmentModal" tabindex="-1" role="dialog" 
-     aria-labelledby="myModalLabel" aria-hidden="true" 
-     data-keyboard="true">
+
+<div id="editAppointmentModal" 
+      class="modal fade in" 
+      tabindex="-1" 
+      role="dialog" 
+      aria-labelledby="myModalLabel" 
+      aria-hidden="true" 
+      style="display: none;"
+      >
+
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <form role="form" class="edit-appointment-form">
+
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h4 class="modal-title" id="myModalLabel">Edit Appointment</h4>
+        </div>
+        <div class="modal-body">
+
+          <div class="edit-appointment-error">{{editItemError}}</div>
+   
+          <label>ID: {{editItem.appointment.id}}</label>
+
+          <div class="form-group">
+            <label>Label</label>
+            <input type="text" class="form-control" id="modal-main" ng-model="editItem.label"/>
+          </div>
+
+          <div class="form-group">
+            <label>Employees</label>
+            <input type="text" class="form-control" ng-model="editItemEmployees"/>
+          </div>
+
+          <div class="form-group">
+            <label>Time</label>
+            <input type="text" class="form-control" ng-model="editItem.time"/>
+          </div>
+
+          <div class="form-group">
+            <label>Blocks</label>
+            <input type="text" class="form-control" ng-model="editItem.appointment.blocks"/>
+          </div>
+          
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" ng-click="modalRemove()" class="btn btn-danger">Remove</button>
+          <button type="submit" ng-click="modalSave()" class="btn btn-primary">Save</button>
+        </div>
+
+      </form>
+
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
 
 
-<div class="modal-dialog">
-  <div class="modal-content">
+ 
 
-    <form>
-
-      <div class="modal-header text-center">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h3 class="modal-title" id="myModalLabel">Edit Appointment</h3>
-      </div>
-      <div class="modal-body">
-
-        <div style="color:red;">{{editAppointmentError}}</div>
-       
-        <label>ID: {{editAppointment.id}}</label>
         
         <label>Name</label>
         <input type="text" id="modal-name" ng-model="editAppointment.label">
@@ -132,12 +197,6 @@
         <button type="submit" class="btn btn-primary" ng-click="modalSave()">Save changes</button>
       </div>
 
-    </form>
-  </div> <!-- /.modal-content -->
-</div> <!-- /.modal-dialog -->
 
 
-
-</div>
-
-{{appointments}}
+{{schedule}}

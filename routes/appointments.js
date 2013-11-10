@@ -14,7 +14,7 @@ function getAppointments (req, res) {
 function postAppointments (req, res) {
 	var appointment = req.body;
 
-  if(appointment.label) {
+  if(appointment.client) {
 
   	if(appointment.id === undefined) {
       appointment.id = appointmentId++;

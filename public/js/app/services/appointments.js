@@ -1,18 +1,13 @@
 angular.module('accent').factory('appointments',
   function ($http) {
 
-    function save(appointment, cb) {
-      var a = {
-        label: appointment.label,
-        name: appointment.name,
-        time: appointment.time,
-        employee: appointment.employee,
-        blocks: appointment.blocks,
-        id: appointment.id
-      };
-
-      $http.post('/appointments', a).then(function (resp) {
-        cb(resp.data);
+    function save(appointment) {
+      $http.post('/appointments', appointment).then(function (resp) {
+        if(resp.data.success) {
+          appointment.id = resp.data.id;
+        } else {
+          console.log("Save appointment failed.");
+        }
       });
     }
 

@@ -1,116 +1,180 @@
 angular.module('accent').controller('scheduleCtrl',
   function ($scope, appointments) {
 
+    $scope.who = makeWho();
   	$scope.times = makeTimes();
-
-  	$scope.employee = makeEmployee();
-
-  	$scope.cols = makeCols($scope.employee);
-
-  	$scope.appointments = makeAppointment($scope.employee, $scope.times, $scope);
+  	$scope.employees = makeEmployees();
+  	$scope.cols = makeCols($scope.employees);
+  	$scope.schedule = makeSchedule($scope.employees, $scope.times, $scope);
 
   	appointments.get(function (data) {
   		for(var key in data) {
   			if(data[key] && data[key].id) {
-  				addAppointment($scope.appointments, data[key]);
+  				addAppointment($scope.schedule, data[key]);
   			}
   		}
   	});
 
-  	$scope.change = function(employee, hour, min) {
-  		var appointment = $scope.appointments[employee][getTimeLabel(hour, min)];
+  	$scope.change = function(employee, time) {
+  		var scheduleItem = $scope.schedule[employee][time.label];
 
-      if(appointment.taken && appointment.child) {
-        appointment.label = 'x';
+      if(scheduleItem.taken && scheduleItem.child) {
+        scheduleItem.label = 'x';
       } else {
 
-        clearChildren(appointment);
+        clearChildren(scheduleItem);
 
-        if(appointment.label) {
+        if(scheduleItem.label) {
+          var blocks = checkLabelForBlocks(scheduleItem);
+          scheduleItem.employee = employee;
+          scheduleItem.time = time.label;
 
-          appointment.name = appointment.label;
-          appointment.time = getTimeLabel(hour, min);
-          appointment.employee = [employee];
-          appointment.taken = true;
-          appointment.child = false;
+          if(scheduleItem.appointment) {
+            updateAppointment(scheduleItem, blocks);
+          } else {
+            makeAppointment(scheduleItem, blocks);
+          }
+          scheduleItem.taken = true;
+          scheduleItem.child = false;
 
-          checkNameForBlocks(appointment);
-
-          addChildren($scope.appointments, appointment);
+          addChildren($scope.schedule, scheduleItem);
         } else {
-          appointment.taken = false;
+          scheduleItem.taken = false;
         }
       }
   	};
 
-    $scope.enterBlur = function(employee, hour, min) {
-      var appointment = $scope.appointments[employee][getTimeLabel(hour, min)];
+    $scope.enterBlur = function(employee, time) {
+      var scheduleItem = $scope.schedule[employee][time.label];
 
-      if(!appointment.child && appointment.label) {
-
-        appointments.save(appointment, function (data) {
-          if(data.success) {
-            appointment.id = data.id
-          } 
-        });
+      if(!scheduleItem.child && scheduleItem.label) {
+        appointments.save(scheduleItem.appointment);
       }
     };
 
-    $scope.click = function(event, employee, hour, min) {
-      var appointment = $scope.appointments[employee][getTimeLabel(hour, min)];
+    $scope.click = function(employee, time) {
+      var scheduleItem = $scope.schedule[employee][time.label];
 
-      if(appointment.taken) {
-        if(appointment.child) {
-          var parent = $scope.appointments[appointment.parent.employee][appointment.parent.time];
+      if(scheduleItem.taken) {
+        if(scheduleItem.child) {
+          var parent = $scope.schedule[scheduleItem.parent.employee][scheduleItem.parent.time];
+         
           console.log("Taken child");
           console.log(parent);
 
-          $scope.editAppointment = parent;
-          $scope.editAppointmentEmployees = $scope.editAppointment.employee.join(',');
+          $scope.editItem = parent;
+          $scope.editItemEmployees = parent.appointment.employees.join(',');
+
           jQuery('#editAppointmentModal').modal();
 
         } else {
           console.log("taken parent");
-          console.log(appointment);
+          console.log(scheduleItem);
 
-          $scope.editAppointment = appointment;
-          $scope.editAppointmentEmployees = $scope.editAppointment.employee.join(',');
-          jQuery('#editAppointmentModal').modal();
+          // $scope.editAppointment = appointment;
+          // $scope.editAppointmentEmployees = $scope.editAppointment.employee.join(',');
+          // jQuery('#editAppointmentModal').modal();
         }
       }
     };
 
     $scope.modalSave = function() {
-      $scope.editAppointment.name = $scope.editAppointment.label;
-      $scope.editAppointment.employee = $scope.editAppointmentEmployees.split(',');
-      $scope.editAppointment.employee = trimArray($scope.editAppointment.employee);
+      var label = $scope.editItem.label;
+      var employees = makeArray($scope.editItemEmployees);
+      var time = $scope.editItem.time;
+      var appointment = $scope.editItem.appointment;
 
-      appointments.save($scope.editAppointment, function (data) {
-        if(data.success) {
-          $scope.editAppointment.id = data.id;
+      var error = appointmentConflict($scope.schedule, $scope.editItem, employees, time);
 
-          for(var key in $scope.editAppointment.employee) {
-            var employee = $scope.editAppointment.employee[key];
-            var time = $scope.editAppointment.time;
+      if(error) {
+        $scope.editItemError = error;
 
-            $scope.appointments[employee][time] = $scope.editAppointment;
-          }
+      } else {
+        removeAppointment($scope.schedule, appointment);
 
-          addChildren($scope.appointments, $scope.editAppointment);
+        appointment.client = label;
+        appointment.employees = employees;
+        appointment.time = time;
 
-          jQuery('#editAppointmentModal').modal('hide');
-        } else {
-          $scope.editAppointmentError = "Save Failed: " + data.msg;
-        }
-      });
+        addAppointment($scope.schedule, appointment);
+
+        jQuery('#editAppointmentModal').modal('hide');
+
+      }
     };
 
     jQuery('#editAppointmentModal').on('shown.bs.modal', function() {
-      jQuery('#modal-name').focus();
+      jQuery('#modal-main').focus();
     });
 
   }
 );
+
+function appointmentConflict(schedule, scheduleItem, employees, time) {
+  if(!validTime(time))
+    return "The start time is not valid.";
+
+ 
+  return false;
+}
+
+function validTime(time) {
+  return (
+    time.match(/\d{2}:00/) ||
+    time.match(/\d{2}:15/) ||
+    time.match(/\d{2}:30/) ||
+    time.match(/\d{2}:45/)
+  ) && (
+    (time >= '08:00' && time < '13:00') || 
+    (time >= '01:00' && time < '06:00')
+  );
+}
+
+
+
+function makeArray(employeeList) {
+  return trimArray(employeeList.split(','));
+}
+
+function getDate() {
+  return "2013-11-09";
+}
+
+function addEmployeeToAppointment(appointment, employee) {
+  if(appointment.employees) {
+    appointment.employees.push(employee);
+  } else {
+    appointment.employees = [employee];
+  }
+}
+
+function updateAppointment(scheduleItem, blocks) {
+  scheduleItem.appointment.blocks = blocks;
+  scheduleItem.appointment.client = scheduleItem.label;
+}
+
+function makeAppointment (scheduleItem, blocks) {
+  scheduleItem.appointment = {
+    employees: [scheduleItem.employee],
+    repeat: false,
+    date: getDate(),
+    time: scheduleItem.time,
+    blocks: blocks,
+    client: scheduleItem.label
+  };
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 function trimArray(arr) {
   for(var key in arr) {
@@ -119,54 +183,57 @@ function trimArray(arr) {
   return arr;
 }
 
-function checkNameForBlocks(appointment) {
-	var name = appointment.name;
-	var blocks = +appointment.blocks || 2;
+function checkLabelForBlocks(scheduleItem) {
+	var label = scheduleItem.label;
+	var blocks = +scheduleItem.appointment.blocks || 2;
 
-	if(name.match(/\b15\b/)) {  
-		name = name.replace(/\s+15\b|\b15\b/, '');
+	if(label.match(/\b15\b/)) {  
+		label = label.replace(/\s+15\b|\b15\b/, '');
 		blocks = 1;
-	} else if(name.match(/\b30\b/)) {  
-		name = name.replace(/\s+30\b|\b30\b/, '');
+	} else if(label.match(/\b30\b/)) {  
+		label = label.replace(/\s+30\b|\b30\b/, '');
 		blocks = 2;
-	} else if(name.match(/\b45\b/)) {  
-		name = name.replace(/\s+45\b|\b45\b/, '');
-		blocks = 3;
-	} else if(name.match(/\bhr\b/)) { 
-		name = name.replace(/\s+hr\b|\bhr\b/, '');
+	} else if(label.match(/\b45\b/)) {  
+    label = label.replace(/\s+45\b|\b45\b/, '');
+    blocks = 3;
+  } else if(label.match(/\b60\b/)) {  
+    label = label.replace(/\s+60\b|\b60\b/, '');
+    blocks = 4;
+  } else if(label.match(/\bhr\b/)) { 
+		label = label.replace(/\s+hr\b|\bhr\b/, '');
 		blocks = 4;
-	} else if(name.match(/\b2hr\b/)) {  
-		name = name.replace(/\s+2hr\b|\b2hr\b/, '');
+	} else if(label.match(/\b2hr\b/)) {  
+		label = label.replace(/\s+2hr\b|\b2hr\b/, '');
 		blocks = 8;
-	} else if(name === '') {
+	} else if(label === '') {
 		blocks = 0;
 	} 
 
-  appointment.name = name;
-	appointment.label = name;
-	appointment.blocks = blocks;
+  scheduleItem.label = label;
+	return blocks;
 }
 
-function clearChildren(appointment) {
-	if(appointment.children) {
-		for(var key in appointment.children) {
-			var child = appointment.children[key];
+function clearChildren(scheduleItem) {
+	if(scheduleItem.children) {
+		for(var key in scheduleItem.children) {
+			var child = scheduleItem.children[key];
 
 			child.label = '';
 			child.taken = false;
-  		}
+  	}
 	}
 
-	appointment.children = [];
+	scheduleItem.children = [];
 }
 
-function addChildren(appointments, appointment) {
+function addChildren(schedule, scheduleItem) {
+  var appointment = scheduleItem.appointment;
 	var blocks = appointment.blocks;
 	var time = appointment.time.split(":");
 	var hour = +time[0];
 	var min = +time[1];
 
-	appointment.children = [];
+  clearChildren(scheduleItem);
 
 	for(var i = 1; i < blocks; i++) {
 		min = min + 15;
@@ -176,49 +243,76 @@ function addChildren(appointments, appointment) {
 			if(hour > 12)
 				hour = 1;
 		}
+    
+    time = getTimeLabel(hour, min);
+		var item = schedule[scheduleItem.employee][time];
 
-    for(var key in appointment.employee) {
-      var employee = appointment.employee[key];
+		if(item.taken === true) {
+			alert("You are trying to overlap another appointment. I will stop at " 
+					+ i + " appointment blocks. Instead of " + blocks + ".");
+		
+			appointment.blocks = i;
+			break;
+		} else {
 
-  		var a = appointments[employee][getTimeLabel(hour, min)];
+  		item.label = 'x';
+  		item.taken = true;
+  		item.child = true;
+      item.parent = {
+        employee: scheduleItem.employee,
+        time: appointment.time
+      };
 
-  		if(a.taken === true) {
-  			alert("You are trying to overlap another appointment. I will stop at " 
-  					+ i + " appointment blocks. Instead of " + blocks + ".");
-  		
-  			appointment.blocks = i;
-  			break;
-  		} else {
-
-    		a.label = 'x';
-    		a.taken = true;
-    		a.child = true;
-        a.parent = {
-          employee: employee,
-          time: appointment.time
-        }
-
-    		appointment.children.push(a);
-      }
-    }
+  		scheduleItem.children.push(item);
+    }    
 	}
+
+  // if(scheduleItem.children.length > 0 && scheduleItem.label.length > 15) {
+  //   scheduleItem.children[0].label = "long";
+  // }
 }
 
-function addAppointment(appointments, appointment) {
-  appointment.taken = true;
-  appointment.child = false;
+function findWordsAfter15(words) {
+  words = words.split(' ');
+  
+}
 
-  console.log(appointment);
+function addAppointment(schedule, appointment) {
+  for(var key in appointment.employees) {
+    var employee = appointment.employees[key];
 
-  for(var key in appointment.employee) {
-    var employee = appointment.employee[key];
+    var scheduleItem = {
+      appointment: appointment,
+      employee: employee,
+      time: appointment.time,
+      label: appointment.client,
+      child: false,
+      taken: true
+    };
 
-    console.log(employee);
-    
-    appointments[employee][appointment.time] = appointment;
+    schedule[employee][appointment.time] = scheduleItem;
+
+    addChildren(schedule, scheduleItem);
+  }
+}
+
+function removeAppointment(schedule, appointment) {
+  for(var key in appointment.employees) {
+    var employee = appointment.employees[key];
+
+    var scheduleItem = schedule[employee][appointment.time];
+
+    removeScheduleItem(schedule, scheduleItem);
+  }
+}
+
+function removeScheduleItem(schedule, scheduleItem) {
+  if(scheduleItem.children) {
+    clearChildren(scheduleItem);
   }
 
-  addChildren(appointments, appointment);
+  scheduleItem.taken = false;
+  scheduleItem.label = '';
 }
 
 function getTimeLabel(hour, min) {
@@ -230,84 +324,56 @@ function pad2Digits(num) {
 	return num < 10 ? "0" + num : "" + num;
 }
 
-function makeAppointment(employees, times, scope) {
-	appointment = {};
+function makeSchedule(employees, times, scope) {
+	schedule = {};
 
-	for(var key in employees) {
-		var employee = employees[key].name;
-		appointment[employee] = {};
-		for(var key in times) {
-			var time = times[key].label;
-			appointment[employee][time] = {};
+  angular.forEach(employees, function (employee, key) {
+    schedule[employee.name] = {};
+    angular.forEach(times, function (time, key) {
+      schedule[employee.name][time.label] = {};
+    });
+  });
 
-		
-		}
-	}
-
-  	return appointment;
+  return schedule;
 }
 
 function makeTimes() {
 	var times = [];
+  var min = ['00','15','30','45'];
+
+  function timesLoops(times, start, end, am) {
+    for(var hour = start; hour <= end; hour++) {
+      for(var key in min) {
+        times.push({
+          class: min[key] == '00' ? 'td-top' : '',
+          hour: hour,
+          min: min[key],
+          label: getTimeLabel(hour, min[key]),
+          am: am
+        });
+      }
+    }
+  }
 
 	timesLoops(times, 8, 11, 'AM');
 	timesLoops(times, 12, 12, 'PM');
-	timesLoops(times, 1, 5, 'PM');	
+	timesLoops(times, 1, 5, 'PM');
 
-  	return times;
-}
-function timesLoops(times, start, end, am) {
-
-	var min = ['00','15','30','45'];
-
-	for(var hour = start; hour <= end; hour++) {
-
-  		var hourStr = hour < 10 ? "0" + hour : "" + hour;
-
-  		for(var key in min) {
-
-  			var minStr = min[key];
-
-  			times.push({
-	  			clazz: minStr == '00' ? 'td-top' : '',
-	  			hour: hour,
-	  			min: minStr,
-	  			label: hourStr + ":" + minStr,
-	  			am: am
-	  		});
-  		}
-  	}
+  return times;
 }
 
-function makeEmployee() {
-	var employee = [
-		{
-			name: 'Jill',
-		},
-		{
-			name: 'Mary',
-		},
-		{
-			name: 'Marva',
-		},
-		{
-			name: 'Sindy',
-		},
-		{
-			name: '',
-		},
-		{
-			name: '',
-		},
-		{
-			name: 'Kortney',
-		},
-		{
-			name: '',
-		}
+
+function makeEmployees() {
+	return [
+		{ name: 'Jill'    },
+		{ name: 'Mary'    },
+		{ name: 'Marva'   },
+		{ name: 'Sindy'   },
+		{ name: ''        },
+		{ name: ''        },
+		{ name: 'Kortney' },
+		{ name: ''        }
 	];
-
-	return employee;
 }
 
 function makeCols(employees) {
@@ -320,4 +386,22 @@ function makeCols(employees) {
 	}
 
 	return cols;
+}
+
+
+function makeWho() {
+  return [
+    {col: 0,    class: "td",    span: 1},
+    {col: "hr", class: "hour",  span: 4},
+    {col: 1,    class: "td",    span: 1},
+    {col: 2,    class: "td",    span: 1},
+    {col: "hr", class: "hour",  span: 4},
+    {col: 3,    class: "td",    span: 1},
+    {col: 4,    class: "td",    span: 1},
+    {col: "hr", class: "hour",  span: 4},
+    {col: 5,    class: "td",    span: 1},
+    {col: 6,    class: "td",    span: 1},
+    {col: "hr", class: "hour",  span: 4},
+    {col: 7,    class: "td",    span: 1}
+  ];
 }
