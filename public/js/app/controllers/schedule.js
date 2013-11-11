@@ -59,21 +59,10 @@ angular.module('accent').controller('scheduleCtrl',
         if(scheduleItem.child) {
           var parent = $scope.schedule[scheduleItem.parent.employee][scheduleItem.parent.time];
          
-          console.log("Taken child");
-          console.log(parent);
-
-          $scope.editItem = parent;
-          $scope.editItemEmployees = parent.appointment.employees.join(',');
-
-          jQuery('#editAppointmentModal').modal();
+          showEditAppointmentModal($scope, parent);
 
         } else {
-          console.log("taken parent");
-          console.log(scheduleItem);
-
-          // $scope.editAppointment = appointment;
-          // $scope.editAppointmentEmployees = $scope.editAppointment.employee.join(',');
-          // jQuery('#editAppointmentModal').modal();
+          showEditAppointmentModal($scope, scheduleItem);
         }
       }
     };
@@ -98,6 +87,8 @@ angular.module('accent').controller('scheduleCtrl',
 
         addAppointment($scope.schedule, appointment);
 
+        appointments.save(appointment);
+
         jQuery('#editAppointmentModal').modal('hide');
 
       }
@@ -109,6 +100,13 @@ angular.module('accent').controller('scheduleCtrl',
 
   }
 );
+
+function showEditAppointmentModal(scope, scheduleItem) {
+  scope.editItem = scheduleItem;
+  scope.editItemEmployees = scheduleItem.appointment.employees.join(',');
+
+  jQuery('#editAppointmentModal').modal();
+}
 
 function appointmentConflict(schedule, scheduleItem, employees, time) {
   if(!validTime(time))
@@ -129,8 +127,6 @@ function validTime(time) {
     (time >= '01:00' && time < '06:00')
   );
 }
-
-
 
 function makeArray(employeeList) {
   return trimArray(employeeList.split(','));
@@ -164,18 +160,6 @@ function makeAppointment (scheduleItem, blocks) {
   };
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
 function trimArray(arr) {
   for(var key in arr) {
     arr[key] = arr[key].trim();
@@ -184,8 +168,12 @@ function trimArray(arr) {
 }
 
 function checkLabelForBlocks(scheduleItem) {
+  var blocks = 2;
+  if(scheduleItem.appointment && scheduleItem.appointment.blocks) {
+    blocks = +scheduleItem.appointment.blocks;
+  }
+
 	var label = scheduleItem.label;
-	var blocks = +scheduleItem.appointment.blocks || 2;
 
 	if(label.match(/\b15\b/)) {  
 		label = label.replace(/\s+15\b|\b15\b/, '');
