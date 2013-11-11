@@ -105,6 +105,8 @@ function showEditAppointmentModal(scope, scheduleItem) {
   scope.editItem = scheduleItem;
   scope.editItemEmployees = scheduleItem.appointment.employees.join(',');
 
+  scope.editItem.label = scheduleItem.appointment.client;
+
   jQuery('#editAppointmentModal').modal();
 }
 
@@ -254,15 +256,28 @@ function addChildren(schedule, scheduleItem) {
   		scheduleItem.children.push(item);
     }    
 	}
-
-  // if(scheduleItem.children.length > 0 && scheduleItem.label.length > 15) {
-  //   scheduleItem.children[0].label = "long";
-  // }
 }
 
-function findWordsAfter15(words) {
-  words = words.split(' ');
+function findWordsAfter15Chars(string) {
+  var maxLength = 15;
+
+  words = string.split(' ');
   
+  var finalWords = [];
+  var string = '';
+  
+  for(var key in words) {
+    if(words[key].length + string.length > maxLength) {
+      finalWords.push(string.trim());
+      string = "";
+    }
+
+    string += words[key] + " ";
+  }
+
+  finalWords.push(string.trim());
+
+  return finalWords;
 }
 
 function addAppointment(schedule, appointment) {
@@ -281,6 +296,20 @@ function addAppointment(schedule, appointment) {
     schedule[employee][appointment.time] = scheduleItem;
 
     addChildren(schedule, scheduleItem);
+
+    var labelArray = findWordsAfter15Chars(scheduleItem.label);
+
+    if(labelArray.length > 1) {
+      for(var index in labelArray) {
+        if(index == 0) {
+          scheduleItem.label = labelArray[index];
+        } else {
+          if(scheduleItem.children[index-1]) {
+            scheduleItem.children[index-1].label = labelArray[index];
+          }
+        }
+      }
+    }
   }
 }
 
