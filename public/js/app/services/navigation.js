@@ -4,6 +4,12 @@ var nav = [
     url: '/',
     ctrl: 'scheduleCtrl',
     tmpl: 'views/schedule.html'
+  },
+  {
+    name: 'Tax Report',
+    url: '/tax-report',
+    ctrl: 'reportCtrl',
+    tmpl: 'views/report.html'
   }
 ];
 

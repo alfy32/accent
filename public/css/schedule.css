@@ -134,7 +134,13 @@ th:hover {
 	color: red;
 }
 
-
+.report-cell {
+	width: 180px;
+	height: 14px;
+	border-left: 3px solid black;
+	border-right: 3px solid black;
+	border-bottom: 1px solid black;
+}
 
 /*
 

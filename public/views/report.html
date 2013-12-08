@@ -1,0 +1,67 @@
+
+
+<table>
+  <thead>
+    <tr>
+      <th>Sunday</th>
+      <th></th>
+      <th>Monday</th>
+      <th>Tusday</th>
+      <th></th>
+      <th>Wednesday</th>
+      <th>Thursday</th>
+      <th></th>
+      <th>Friday</th>
+      <th>Saturday</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="time in times" ng-class-odd="'td-odd'">
+      <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
+      
+      <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
+        <div hour-cell></div>
+      </td>
+
+      <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
+      <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
+      
+      <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
+        <div hour-cell></div>
+      </td>
+
+      <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
+      <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
+      
+      <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
+        <div hour-cell></div>
+      </td>
+
+      <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
+      <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>employeeId</th>
+      <th>date</th>
+      <th>start time</th>
+      <th>end time</th>
+      <th>client</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr ng-repeat="row in report.appointments">
+      <td class="report-cell">{{row.id}}</td>
+      <td class="report-cell">{{row.employeeId}}</td>
+      <td class="report-cell">{{row.date}}</td>
+      <td class="report-cell">{{row.startTime}}</td>
+      <td class="report-cell">{{row.endTime}}</td>
+      <td class="report-cell">{{row.client}}</td>
+    </tr>
+  </tbody>
+</table>
