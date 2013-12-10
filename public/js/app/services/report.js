@@ -25,7 +25,6 @@ angular.module('accent').factory('report',
       $http.get(url + '?start=' + start + '&end=' + end).then(function(resp) {
         if(resp.data.success) {
           report[start] = resp.data.appointments;
-          console.log(start, resp.data.appointments)
         } else {
           console.log('Failed to get westhost appointments.', resp.data.err);
         }
