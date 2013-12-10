@@ -1,5 +1,25 @@
 
-<div ng-repeat="(sunday, week) in report">
+<form class="report-form" role="form">
+  <div class="report-form-div">
+    <label>Start Date</label><input class="form-control" type="date" ng-model="start"/>
+  </div>
+  <div class="report-form-div">
+    <label>End Date</label><input class="form-control" type="date" ng-model="end"/>
+  </div>
+  <div class="report-form-div">
+    <label>Employee</label>
+    <select class="form-control" ng-model="employee">
+      <option value="Jill">Jill</option>
+      <option value="Mary">Mary</option>
+    </select>
+  </div>
+  <div class="report-form-div">
+    <input type='submit' class="btn form-control" ng-click="report.getApointments(start,end,employee)" value="Get Appointments" />
+  </div>
+</form>
+
+
+<div class="report-week-div" ng-repeat="(sunday, week) in report.appointments">
   <h3 class="text-center">{{date.jsonToDate(sunday) | date:'fullDate'}} -
     {{date.addDays(date.jsonToDate(sunday),7) | date:'fullDate'}}</h3 class="center">
 
@@ -24,8 +44,8 @@
         <td 
             ng-class="time.class"
             class="report-cell"
-            title="{{week.sunday[time.label].clientFull}}"
-          >{{week.sunday[time.label].client}}</td>
+            title="{{week.sunday[time.label].title}}"
+          ><div class="report-cell-div">{{week.sunday[time.label].client}}</div></td>
         
         <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
           <div hour-cell></div>
@@ -34,13 +54,13 @@
         <td 
             ng-class="time.class"
             class="report-cell"
-            title="{{week.monday[time.label].clientFull}}"
-          >{{week.monday[time.label].client}}</td>
+            title="{{week.monday[time.label].title}}"
+          ><div class="report-cell-div">{{week.monday[time.label].client}}</div></td>
         <td 
             ng-class="time.class"
             class="report-cell"
-            title="{{week.tuesday[time.label].clientFull}}"
-           >{{week.tuesday[time.label].client}}</td>
+            title="{{week.tuesday[time.label].title}}"
+           ><div class="report-cell-div">{{week.tuesday[time.label].client}}</div></td>
         
         <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
           <div hour-cell></div>
@@ -49,13 +69,13 @@
         <td 
             ng-class="time.class"
             class="report-cell"
-            title="{{week.wednesday[time.label].clientFull}}"
-          >{{week.wednesday[time.label].client}}</td>
+            title="{{week.wednesday[time.label].title}}"
+          ><div class="report-cell-div">{{week.wednesday[time.label].client}}</div></td>
         <td 
             ng-class="time.class"
             class="report-cell"
-            title="{{week.thursday[time.label].clientFull}}"
-          >{{week.thursday[time.label].client}}</td>
+            title="{{week.thursday[time.label].title}}"
+          ><div class="report-cell-div">{{week.thursday[time.label].client}}</div></td>
         
         <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
           <div hour-cell></div>
@@ -64,13 +84,13 @@
         <td 
             ng-class="time.class"
             class="report-cell"
-            title="{{week.friday[time.label].clientFull}}"
-          >{{week.friday[time.label].client}}</td>
+            title="{{week.friday[time.label].title}}"
+          ><div class="report-cell-div">{{week.friday[time.label].client}}</div></td>
         <td 
             ng-class="time.class"
             class="report-cell"
-            title="{{week.saturday[time.label].clientFull}}"
-          >{{week.saturday[time.label].client}}</td>
+            title="{{week.saturday[time.label].title}}"
+          ><div class="report-cell-div">{{week.saturday[time.label].client}}</div></td>
       </tr>
     </tbody>
   </table>

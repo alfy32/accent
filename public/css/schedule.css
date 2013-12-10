@@ -1,7 +1,7 @@
-/*@font-face {
+@font-face {
 font-family: handWrite;
-src: url( "../fonts/PassingNotes.ttf" );
-}*/
+src: url( "../font/PassingNotes.ttf" );
+}
 
 body {
 	margin: 0px; 
@@ -136,14 +136,35 @@ th:hover {
 
 .report-cell {
 	width: 160px;
-	height: 14px;
+	height: 13px;
 	border-left: 3px solid black;
 	border-right: 3px solid black;
 	border-bottom: 1px solid black;
 	text-align: center;
 	color: blue;
+	font-family: handWrite;
+	font-size: 14px;
 }
 
+.report-cell-div { 
+	height: 12px;
+	position: relative;
+	top: -3px;
+}
+
+.report-week-div {
+	page-break-before: always;
+	margin-bottom: 20px;
+}
+
+.report-form {
+	width: 700px;
+	margin: auto;
+}
+
+.report-form-div {
+	display: inline-block;
+}
 /*
 
 body {
