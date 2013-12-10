@@ -9,7 +9,9 @@ angular.module('accent').factory('date',
       dateToJson: dateToJson,
       jsonToDate: jsonToDate,
       clearTime: clearTime,
-      getDate: getDate
+      getDate: getDate,
+      getFirstDayOfYear: getFirstDayOfYear,
+      addDays: addDays
     };
 
     date.current = clearTime(new Date());
@@ -28,6 +30,11 @@ angular.module('accent').factory('date',
       'sunday', 'monday','tuesday', 'wednesday', 
       'thursday', 'friday', 'saturday'
     ];
+
+    function addDays(date) {
+      date.setDate(date.getDate() + 7);
+      return date;
+    }
 
     function currentJSON() {
       return dateToJson(date.current);
@@ -91,6 +98,17 @@ angular.module('accent').factory('date',
 
       newDate.setDate(sunday + dayNumber);
 
+      return newDate;
+    }
+
+    function getFirstDayOfYear(year) {
+      var newDate = new Date();
+
+      if(!year)
+        year = newDate.getFullYear();
+
+      newDate = new Date(year, 0, 1, 0,0,0);
+      
       return newDate;
     }
 
