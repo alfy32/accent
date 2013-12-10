@@ -21,28 +21,56 @@
     </thead>
     <tbody>
       <tr ng-repeat="time in times" ng-class-odd="'td-odd'">
-        <td ng-class="time.class" class="report-cell">{{week.sunday[time.label].client}}</td>
+        <td 
+            ng-class="time.class"
+            class="report-cell"
+            title="{{week.sunday[time.label].clientFull}}"
+          >{{week.sunday[time.label].client}}</td>
         
         <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
           <div hour-cell></div>
         </td>
 
-        <td ng-class="time.class" class="report-cell">{{week.monday[time.label].client}}</td>
-        <td ng-class="time.class" class="report-cell">{{week.tuesday[time.label].client}}</td>
+        <td 
+            ng-class="time.class"
+            class="report-cell"
+            title="{{week.monday[time.label].clientFull}}"
+          >{{week.monday[time.label].client}}</td>
+        <td 
+            ng-class="time.class"
+            class="report-cell"
+            title="{{week.tuesday[time.label].clientFull}}"
+           >{{week.tuesday[time.label].client}}</td>
         
         <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
           <div hour-cell></div>
         </td>
 
-        <td ng-class="time.class" class="report-cell">{{week.wednesday[time.label].client}}</td>
-        <td ng-class="time.class" class="report-cell">{{week.thursday[time.label].client}}</td>
+        <td 
+            ng-class="time.class"
+            class="report-cell"
+            title="{{week.wednesday[time.label].clientFull}}"
+          >{{week.wednesday[time.label].client}}</td>
+        <td 
+            ng-class="time.class"
+            class="report-cell"
+            title="{{week.thursday[time.label].clientFull}}"
+          >{{week.thursday[time.label].client}}</td>
         
         <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
           <div hour-cell></div>
         </td>
 
-        <td ng-class="time.class" class="report-cell">{{week.friday[time.label].client}}</td>
-        <td ng-class="time.class" class="report-cell">{{week.saturday[time.label].client}}</td>
+        <td 
+            ng-class="time.class"
+            class="report-cell"
+            title="{{week.friday[time.label].clientFull}}"
+          >{{week.friday[time.label].client}}</td>
+        <td 
+            ng-class="time.class"
+            class="report-cell"
+            title="{{week.saturday[time.label].clientFull}}"
+          >{{week.saturday[time.label].client}}</td>
       </tr>
     </tbody>
   </table>

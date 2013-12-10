@@ -36,6 +36,23 @@ angular.module('accent').factory('report',
             var time = normalizeTime(appointment.startTime);
             var dayOfWeek = date.jsonToDate(appointment.date).getDay();
 
+            var clientStrings = appointment.client.split(' ');
+
+            var client = '';
+            
+            var MAX_LEN = 20;
+            var i = 0;
+
+            for(; i < clientStrings.length && client.length + clientStrings[i].length < MAX_LEN; i++) {
+              client += ' ' + clientStrings[i];
+            }
+
+
+
+            // if(client.length >= MAX_LEN) {
+            //   client = client.substr(0,MAX_LEN);
+            // }
+
             if(!report[start][date.days[dayOfWeek]])
               report[start][date.days[dayOfWeek]] = {}
 
@@ -43,9 +60,9 @@ angular.module('accent').factory('report',
               date: appointment.date,
               time: time,
               blocks: appointment.endTime,
-              client: appointment.client,
+              client: client,
               employee: appointment.employee,
-              dow: date.days[dayOfWeek]
+              clientFull: appointment.client
             };
           }
         } else {
