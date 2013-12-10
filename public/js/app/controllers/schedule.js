@@ -365,7 +365,7 @@ function makeTimes() {
           class: min[key] == '00' ? 'td-top' : '',
           hour: hour,
           min: min[key],
-          label: getTimeLabel(hour, min[key]),
+          label: getTimeLabel(hour, +min[key]),
           am: am
         });
       }

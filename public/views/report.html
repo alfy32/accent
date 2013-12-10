@@ -1,27 +1,50 @@
 
 <div ng-repeat="(sunday, week) in report">
+  <h3 class="text-center">{{date.jsonToDate(sunday) | date:'fullDate'}} -
+    {{date.addDays(date.jsonToDate(sunday),7) | date:'fullDate'}}</h3 class="center">
+
+   <!--  <pre>{{week.tuesday | json}}</pre> -->
   <table>
-    <tr>
-      <th>Week</th>
-      <th>Starting: 
-      <th>{{sunday}}</th>
-      <th>Ending:</th>
-      <th>{{date.dateToJson(date.addDays(date.jsonToDate(sunday),7))}}</th>
-    </tr>
-    <tr>
-      <th>Date</th>
-      <th>Start Time</th>
-      <th>End Time</th>
-      <th>Client</th>
-      <th>Employee</th>
-    </tr>
-    <tr ng-repeat="appointment in week">
-      <td>{{appointment.date}}</td>
-      <td>{{appointment.startTime}}</td>
-      <td>{{appointment.endTime}}</td>
-      <td>{{appointment.client}}</td>
-      <td>{{appointment.employee}}</td>
-    </tr>
+    <thead>
+      <tr>
+        <th>Sunday</th>
+        <th></th>
+        <th>Monday</th>
+        <th>Tusday</th>
+        <th></th>
+        <th>Wednesday</th>
+        <th>Thursday</th>
+        <th></th>
+        <th>Friday</th>
+        <th>Saturday</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="time in times" ng-class-odd="'td-odd'">
+        <td ng-class="time.class" class="report-cell">{{week.sunday[time.label].client}}</td>
+        
+        <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
+          <div hour-cell></div>
+        </td>
+
+        <td ng-class="time.class" class="report-cell">{{week.monday[time.label].client}}</td>
+        <td ng-class="time.class" class="report-cell">{{week.tuesday[time.label].client}}</td>
+        
+        <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
+          <div hour-cell></div>
+        </td>
+
+        <td ng-class="time.class" class="report-cell">{{week.wednesday[time.label].client}}</td>
+        <td ng-class="time.class" class="report-cell">{{week.thursday[time.label].client}}</td>
+        
+        <td ng-class="time.class" class="hour" ng-show="time.min == '00'" rowspan="4">
+          <div hour-cell></div>
+        </td>
+
+        <td ng-class="time.class" class="report-cell">{{week.friday[time.label].client}}</td>
+        <td ng-class="time.class" class="report-cell">{{week.saturday[time.label].client}}</td>
+      </tr>
+    </tbody>
   </table>
 </div>
 
@@ -64,29 +87,6 @@
 
       <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
       <td ng-class="time.class" class="report-cell">{{report[employee][time.label]}}</td>
-    </tr>
-  </tbody>
-</table>
-
-<table>
-  <thead>
-    <tr>
-      <th>id</th>
-      <th>employeeId</th>
-      <th>date</th>
-      <th>start time</th>
-      <th>end time</th>
-      <th>client</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr ng-repeat="row in report.appointments">
-      <td class="report-cell">{{row.id}}</td>
-      <td class="report-cell">{{row.employeeId}}</td>
-      <td class="report-cell">{{row.date}}</td>
-      <td class="report-cell">{{row.startTime}}</td>
-      <td class="report-cell">{{row.endTime}}</td>
-      <td class="report-cell">{{row.client}}</td>
     </tr>
   </tbody>
 </table>

@@ -4,7 +4,10 @@ angular.module('accent').factory('report',
     var report = {};
 
     var jan1 = date.getFirstDayOfYear();
-    
+
+    jan1.setMonth(11);
+    // jan1.setDate(8);
+
     var sunday = date.getDate(jan1, 'sunday');
     var nextSunday = date.addDays(new Date(sunday), 7);
 
@@ -24,15 +27,49 @@ angular.module('accent').factory('report',
 
       $http.get(url + '?start=' + start + '&end=' + end).then(function(resp) {
         if(resp.data.success) {
-          report[start] = resp.data.appointments;
+          if(!report[start])
+            report[start] = {};
+          
+          for(var i in resp.data.appointments) {
+            var appointment = resp.data.appointments[i];
+
+            var time = normalizeTime(appointment.startTime);
+            var dayOfWeek = date.jsonToDate(appointment.date).getDay();
+
+            if(!report[start][date.days[dayOfWeek]])
+              report[start][date.days[dayOfWeek]] = {}
+
+            report[start][date.days[dayOfWeek]][time] = {
+              date: appointment.date,
+              time: time,
+              blocks: appointment.endTime,
+              client: appointment.client,
+              employee: appointment.employee,
+              dow: date.days[dayOfWeek]
+            };
+          }
         } else {
           console.log('Failed to get westhost appointments.', resp.data.err);
         }
       });
         
     }
+
+    function normalizeTime(time) {
+      var time = time.split(':');
+      var hour = ((time[0]-1)%12+1);
+      var min = time[1];
+
+      if(hour < 10) hour = '0' + hour;
+      
+      return hour + ':' + min;
+    }
     
 
     return report;
   }
 );
+
+function jsonTimeToMin(time) {
+  var splitTime = time.split(':');
+}
