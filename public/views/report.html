@@ -1,4 +1,29 @@
 
+<div ng-repeat="(sunday, week) in report">
+  <table>
+    <tr>
+      <th>Week</th>
+      <th>Starting: 
+      <th>{{sunday}}</th>
+      <th>Ending:</th>
+      <th>{{date.dateToJson(date.addDays(date.jsonToDate(sunday),7))}}</th>
+    </tr>
+    <tr>
+      <th>Date</th>
+      <th>Start Time</th>
+      <th>End Time</th>
+      <th>Client</th>
+      <th>Employee</th>
+    </tr>
+    <tr ng-repeat="appointment in week">
+      <td>{{appointment.date}}</td>
+      <td>{{appointment.startTime}}</td>
+      <td>{{appointment.endTime}}</td>
+      <td>{{appointment.client}}</td>
+      <td>{{appointment.employee}}</td>
+    </tr>
+  </table>
+</div>
 
 <table>
   <thead>

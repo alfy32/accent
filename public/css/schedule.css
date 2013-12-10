@@ -122,7 +122,7 @@ th:hover {
 
 
 #editAppointmentModal {
-    width: 300px;
+  width: 300px;
 	margin-left: -120px;
 }
 
@@ -135,7 +135,7 @@ th:hover {
 }
 
 .report-cell {
-	width: 180px;
+	width: 160px;
 	height: 14px;
 	border-left: 3px solid black;
 	border-right: 3px solid black;
