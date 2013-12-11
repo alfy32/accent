@@ -8,10 +8,7 @@
   </div>
   <div class="report-form-div">
     <label>Employee</label>
-    <select class="form-control" ng-model="employee">
-      <option value="Jill">Jill</option>
-      <option value="Mary">Mary</option>
-    </select>
+    <select class="form-control" ng-model="employee" ng-options="e for e in employees"></select>
   </div>
   <div class="report-form-div">
     <input type='submit' class="btn form-control" ng-click="report.getApointments(start,end,employee)" value="Get Appointments" />
