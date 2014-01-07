@@ -1,12 +1,14 @@
 {
-  "name": "wccr",
+  "name": "accent",
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node app.js"
+    "start": "node server/app 3000"
   },
   "dependencies": {
     "express": "3.4.0",
-    "request": "*"
+    "config": "~0.4.31",
+    "request": "~2.27.0",
+    "password-hash": "~1.2.1"
   }
 }
