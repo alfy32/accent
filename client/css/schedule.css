@@ -4,166 +4,166 @@ src: url( "../font/PassingNotes.ttf" );
 }
 
 body {
-	margin: 0px; 
-	min-width: 1400px;
+  margin: 0px; 
+  /*min-width: 1400px;*/
 }
 
 /* TABLE STYLE */
 
 table { 
-	border-collapse: collapse;
-	margin: auto;
-	border-bottom: 3px solid black;
-	background-color: rgb(213, 211, 211);
+  border-collapse: collapse;
+  margin: auto;
+  border-bottom: 3px solid black;
+  background-color: rgb(213, 211, 211);
 }
 
  /*EMPLOYEE HEADERS  */
 th { 
-	font-family: "Comic Sans MS";
-	font-size: 18px;
-	text-align: center;
-	padding-top: 3px; 
-	padding-bottom: 3px;
-	background-color: white;
+  font-family: "Comic Sans MS";
+  font-size: 18px;
+  text-align: center;
+  padding-top: 3px; 
+  padding-bottom: 3px;
+  background-color: white;
 }
 th:hover {
-	cursor: pointer;
-	color: gray;
+  cursor: pointer;
+  color: gray;
 }
 
 .hour {
-	width: 40px;
-	border: 3px solid black;
-	background-color: rgb(213, 211, 211);
+  width: 40px;
+  border: 3px solid black;
+  background-color: rgb(213, 211, 211);
 }
 
 .hour .h {
-	height: 20px;
-	margin: 0px;
-	font-family: "Comic Sans MS";
-	font-size: 36px;
-	text-align: center;
+  height: 20px;
+  margin: 0px;
+  font-family: "Comic Sans MS";
+  font-size: 36px;
+  text-align: center;
 }
 
 .hour .m {
-	height: 21px;
-	margin: 0px;
-	font-family: "Comic Sans MS";
-	font-size: 15px;
-	text-align: center;
+  height: 21px;
+  margin: 0px;
+  font-family: "Comic Sans MS";
+  font-size: 15px;
+  text-align: center;
 }
 
 .td {
-	margin: 0px;
-	padding: 0px;
-	border: 1px solid black;
-	line-height: 0px;
-	border-left: 3px solid black;
-	border-right: 3px solid black;
+  margin: 0px;
+  padding: 0px;
+  border: 1px solid black;
+  line-height: 0px;
+  border-left: 3px solid black;
+  border-right: 3px solid black;
 }
 
 
 .td-odd {
-	background-color: white;	
+  background-color: white;  
 }
 
 .td-top {
-	border-top: 3px solid black;
+  border-top: 3px solid black;
 }
 
 .input {
-	width: 125px;
-	height: 16px;
-	margin: 0px;
-	padding: 0px;
+  width: 125px;
+  height: 16px;
+  margin: 0px;
+  padding: 0px;
 
-	text-align: center;
-	font-family: "Comic Sans MS";
-	font-size: 14px;
+  text-align: center;
+  font-family: "Comic Sans MS";
+  font-size: 14px;
 
 
-	display: inline-block;
-	vertical-align: top;
-	border: none;
-	background: none;
+  display: inline-block;
+  vertical-align: top;
+  border: none;
+  background: none;
 }
 
 .min-label {
-	display: inline-block;
-	margin: 0px;
-	padding: 0px;
-	width: 18px;
-	height: 12px;
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  width: 18px;
+  height: 12px;
 
-	font-size: 13px;
-	font-family: "Comic Sans MS";
+  font-size: 13px;
+  font-family: "Comic Sans MS";
 }
 
 .min-label-left {
-	display: inline-block;
-	margin: 0px;
-	padding: 0px;
-	width: 20px;
-	text-align: left;
+  display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  width: 20px;
+  text-align: left;
 }
 
 .text-left {
-	text-align: left;
+  text-align: left;
 }
 
 .text-right {
-	text-align: right;
+  text-align: right;
 }
 
 .text-center {
-	text-align: center;
+  text-align: center;
 }
 
 
 
 #editAppointmentModal {
   width: 300px;
-	margin-left: -120px;
+  margin-left: -120px;
 }
 
 .edit-appointment-form {
-	margin: 0px;
+  margin: 0px;
 }
 
 .edit-appointment-error {
-	color: red;
+  color: red;
 }
 
 .report-cell {
-	width: 160px;
-	height: 13px;
-	border-left: 3px solid black;
-	border-right: 3px solid black;
-	border-bottom: 1px solid black;
-	text-align: center;
-	color: blue;
-	font-family: handWrite;
-	font-size: 14px;
+  width: 160px;
+  height: 13px;
+  border-left: 3px solid black;
+  border-right: 3px solid black;
+  border-bottom: 1px solid black;
+  text-align: center;
+  color: blue;
+  font-family: handWrite;
+  font-size: 14px;
 }
 
 .report-cell-div { 
-	height: 12px;
-	position: relative;
-	top: -3px;
+  height: 12px;
+  position: relative;
+  top: -3px;
 }
 
 .report-week-div {
-	page-break-before: always;
-	margin-bottom: 20px;
+  page-break-before: always;
+  margin-bottom: 20px;
 }
 
 .report-form {
-	width: 700px;
-	margin: auto;
+  width: 700px;
+  margin: auto;
 }
 
 .report-form-div {
-	display: inline-block;
+  display: inline-block;
 }
 /*
 
@@ -179,54 +179,129 @@ body {
 }
 
 .schedule {
-	display: inline-block;
-	border: 1px solid black;
-	margin: 20px;
+  display: inline-block;
+  border: 1px solid black;
+  margin: 20px;
 }
 
 .schedule-col {
-	display: inline-block;
+  display: inline-block;
 }
 
 .block { 
-	width: 150px;
-	border-top:    1px solid black;
-	border-left:   1px solid black;
-	border-right:  1px solid black;
-	border-bottom: none;
+  width: 150px;
+  border-top:    1px solid black;
+  border-left:   1px solid black;
+  border-right:  1px solid black;
+  border-bottom: none;
 }
 
 .block-row {
-	display: inline-block;
-	border-bottom: 1px solid black;
-	width: 150px;
-	text-align: right;
+  display: inline-block;
+  border-bottom: 1px solid black;
+  width: 150px;
+  text-align: right;
 }
 
 .block-row input[readonly] {
-	width: 126px;
-	text-align: center;
+  width: 126px;
+  text-align: center;
 
-	margin: 0px;
-	padding: 0px;
-	background-color: white;
-	border: none;
-	cursor: default;
-	display: inline-block;
+  margin: 0px;
+  padding: 0px;
+  background-color: white;
+  border: none;
+  cursor: default;
+  display: inline-block;
 
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none;
-	-webkit-transition: none;
-	-moz-transition: none;
-	-o-transition: none;
-	transition: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: none;
+  -moz-transition: none;
+  -o-transition: none;
+  transition: none;
 }
 
 .block-row label {
-	display: inline-block;
-	text-align: left;
-	width: 20px;
-	padding: 0px;
-	margin: 0px;
+  display: inline-block;
+  text-align: left;
+  width: 20px;
+  padding: 0px;
+  margin: 0px;
 }*/
+
+.schedule {
+width: 99%;
+line-height: 16px;
+
+margin-top: 20px;
+}
+
+.schedule-body {
+  border: 3px solid black;
+}
+
+.schedule-hour {
+width: 30px;
+border: 3px solid black;
+}
+
+.schedule-hour .h {
+height: 20px;
+margin: 0px;
+margin-top: 15px;
+font-family: "Comic Sans MS";
+font-size: 36px;
+text-align: center;
+}
+
+.schedule-hour .m {
+  height: 21px;
+  margin: 0px;
+  font-family: "Comic Sans MS";
+  font-size: 15px;
+  text-align: center;
+}
+
+.schedule-block {
+padding: 0px;
+margin: 0px;
+border: 1px solid;
+border-left: 3px solid;
+border-right: 3px solid;
+}
+
+.schedule-block-div-right {
+  margin-right: 20px;
+}
+
+.schedule-block-div-left {
+  margin-left: 20px;
+}
+
+.schedule-block-input {
+width: 100%;
+border: none;
+margin: 0px;
+padding: 0px;
+vertical-align: top;
+background: none;
+line-height: 16px;
+}
+
+.schedule-block-min {
+position: relative;
+height: 20px;
+margin-bottom: -20px;
+padding: 0px 2px;
+pointer-events: none;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-left {
+  text-align: left;
+}

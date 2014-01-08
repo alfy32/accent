@@ -1,102 +1,106 @@
 angular.module('accent').controller('scheduleCtrl',
-  function ($scope, appointments) {
+  function ($scope, schedule, appointments, hours) {
 
-    $scope.who = makeWho();
-  	$scope.times = makeTimes();
-  	$scope.employees = makeEmployees();
-  	$scope.cols = makeCols($scope.employees);
-  	$scope.schedule = makeSchedule($scope.employees, $scope.times, $scope);
+    $scope.appointments = appointments.appointments;
+    $scope.times = hours.times;
+    $scope.s = schedule.items;
 
-  	appointments.get(function (data) {
-  		for(var key in data) {
-  			if(data[key] && data[key].id) {
-  				addAppointment($scope.schedule, data[key]);
-  			}
-  		}
-  	});
+   //  $scope.who = makeWho();
+  	// $scope.times = schedule.times;
+  	// $scope.employees = makeEmployees();
+  	// $scope.cols = makeCols($scope.employees);
+  	// $scope.schedule = makeSchedule($scope.employees, $scope.times, $scope);
 
-  	$scope.change = function(employee, time) {
-  		var scheduleItem = $scope.schedule[employee][time.label];
+  	// appointments.get(function (data) {
+  	// 	for(var key in data) {
+  	// 		if(data[key] && data[key].id) {
+  	// 			addAppointment($scope.schedule, data[key]);
+  	// 		}
+  	// 	}
+  	// });
 
-      if(scheduleItem.taken && scheduleItem.child) {
-        scheduleItem.label = 'x';
-      } else {
+  	// $scope.change = function(employee, time) {
+  	// 	var scheduleItem = $scope.schedule[employee][time.label];
 
-        clearChildren(scheduleItem);
+   //    if(scheduleItem.taken && scheduleItem.child) {
+   //      scheduleItem.label = 'x';
+   //    } else {
 
-        if(scheduleItem.label) {
-          var blocks = checkLabelForBlocks(scheduleItem);
-          scheduleItem.employee = employee;
-          scheduleItem.time = time.label;
+   //      clearChildren(scheduleItem);
 
-          if(scheduleItem.appointment) {
-            updateAppointment(scheduleItem, blocks);
-          } else {
-            makeAppointment(scheduleItem, blocks);
-          }
-          scheduleItem.taken = true;
-          scheduleItem.child = false;
+   //      if(scheduleItem.label) {
+   //        var blocks = checkLabelForBlocks(scheduleItem);
+   //        scheduleItem.employee = employee;
+   //        scheduleItem.time = time.label;
 
-          addChildren($scope.schedule, scheduleItem);
-        } else {
-          scheduleItem.taken = false;
-        }
-      }
-  	};
+   //        if(scheduleItem.appointment) {
+   //          updateAppointment(scheduleItem, blocks);
+   //        } else {
+   //          makeAppointment(scheduleItem, blocks);
+   //        }
+   //        scheduleItem.taken = true;
+   //        scheduleItem.child = false;
 
-    $scope.enterBlur = function(employee, time) {
-      var scheduleItem = $scope.schedule[employee][time.label];
+   //        addChildren($scope.schedule, scheduleItem);
+   //      } else {
+   //        scheduleItem.taken = false;
+   //      }
+   //    }
+  	// };
 
-      if(!scheduleItem.child && scheduleItem.label) {
-        appointments.save(scheduleItem.appointment);
-      }
-    };
+   //  $scope.enterBlur = function(employee, time) {
+   //    var scheduleItem = $scope.schedule[employee][time.label];
 
-    $scope.click = function(employee, time) {
-      var scheduleItem = $scope.schedule[employee][time.label];
+   //    if(!scheduleItem.child && scheduleItem.label) {
+   //      appointments.save(scheduleItem.appointment);
+   //    }
+   //  };
 
-      if(scheduleItem.taken) {
-        if(scheduleItem.child) {
-          var parent = $scope.schedule[scheduleItem.parent.employee][scheduleItem.parent.time];
+   //  $scope.click = function(employee, time) {
+   //    var scheduleItem = $scope.schedule[employee][time.label];
+
+   //    if(scheduleItem.taken) {
+   //      if(scheduleItem.child) {
+   //        var parent = $scope.schedule[scheduleItem.parent.employee][scheduleItem.parent.time];
          
-          showEditAppointmentModal($scope, parent);
+   //        showEditAppointmentModal($scope, parent);
 
-        } else {
-          showEditAppointmentModal($scope, scheduleItem);
-        }
-      }
-    };
+   //      } else {
+   //        showEditAppointmentModal($scope, scheduleItem);
+   //      }
+   //    }
+   //  };
 
-    $scope.modalSave = function() {
-      var label = $scope.editItem.label;
-      var employees = makeArray($scope.editItemEmployees);
-      var time = $scope.editItem.time;
-      var appointment = $scope.editItem.appointment;
+   //  $scope.modalSave = function() {
+   //    var label = $scope.editItem.label;
+   //    var employees = makeArray($scope.editItemEmployees);
+   //    var time = $scope.editItem.time;
+   //    var appointment = $scope.editItem.appointment;
 
-      var error = appointmentConflict($scope.schedule, $scope.editItem, employees, time);
+   //    var error = appointmentConflict($scope.schedule, $scope.editItem, employees, time);
 
-      if(error) {
-        $scope.editItemError = error;
+   //    if(error) {
+   //      $scope.editItemError = error;
 
-      } else {
-        removeAppointment($scope.schedule, appointment);
+   //    } else {
+   //      removeAppointment($scope.schedule, appointment);
 
-        appointment.client = label;
-        appointment.employees = employees;
-        appointment.time = time;
+   //      appointment.client = label;
+   //      appointment.employees = employees;
+   //      appointment.time = time;
 
-        addAppointment($scope.schedule, appointment);
+   //      addAppointment($scope.schedule, appointment);
 
-        appointments.save(appointment);
+   //      appointments.save(appointment);
 
-        jQuery('#editAppointmentModal').modal('hide');
+   //      jQuery('#editAppointmentModal').modal('hide');
 
-      }
-    };
+   //    }
+   //  };
 
-    jQuery('#editAppointmentModal').on('shown.bs.modal', function() {
-      jQuery('#modal-main').focus();
-    });
+   //  jQuery('#editAppointmentModal').on('shown.bs.modal', function() {
+   //    jQuery('#modal-main').focus();
+   //  });
 
   }
 );

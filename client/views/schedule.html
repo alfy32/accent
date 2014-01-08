@@ -1,4 +1,166 @@
+<table class="schedule">
+  <tbody class="schedule-body">
+    <tr ng-repeat="time in times">
+      <td class="schedule-block">
+        <p class="schedule-block-min text-right">{{time.min}}</p>
+        <div class="schedule-block-div-right">
+          <input class="schedule-block-input" ng-model="time.time">
+        </div>
+      </td>  
+      
+      <td ng-show="time.min == 00" rowspan="4" class="schedule-hour">
+        <p class="h">{{time.hour}}</p>
+        <p class="m">{{time.am}}</p>
+      </td>  
+      
+      <td class="schedule-block">
+        <p class="schedule-block-min text-left">{{time.min}}</p>
+        <div class="schedule-block-div-left">
+          <input class="schedule-block-input">
+        </div>
+      </td> 
+      <td class="schedule-block">
+        <p class="schedule-block-min text-right">{{time.min}}</p>
+        <div class="schedule-block-div-right">
+          <input class="schedule-block-input">
+        </div>
+      </td>  
+      
+      <td ng-show="time.min == 0" rowspan="4" class="schedule-hour">
+        <p class="h">{{time.hour}}</p>
+        <p class="m">{{time.am}}</p>
+      </td>  
+      
+      <td class="schedule-block">
+        <p class="schedule-block-min text-left">{{time.min}}</p>
+        <div class="schedule-block-div-left">
+          <input class="schedule-block-input">
+        </div>
+      </td> 
+      <td class="schedule-block">
+        <p class="schedule-block-min text-right">{{time.min}}</p>
+        <div class="schedule-block-div-right">
+          <input class="schedule-block-input">
+        </div>
+      </td>  
+      
+      <td ng-show="time.min == 0" rowspan="4" class="schedule-hour">
+        <p class="h">{{time.hour}}</p>
+        <p class="m">{{time.am}}</p>
+      </td>  
+      
+      <td class="schedule-block">
+        <p class="schedule-block-min text-left">{{time.min}}</p>
+        <div class="schedule-block-div-left">
+          <input class="schedule-block-input">
+        </div>
+      </td> 
+      <td class="schedule-block">
+        <p class="schedule-block-min text-right">{{time.min}}</p>
+        <div class="schedule-block-div-right">
+          <input class="schedule-block-input">
+        </div>
+      </td>  
+      
+      <td ng-show="time.min == 0" rowspan="4" class="schedule-hour">
+        <p class="h">{{time.hour}}</p>
+        <p class="m">{{time.am}}</p>
+      </td>  
+      
+      <td class="schedule-block">
+        <p class="schedule-block-min text-left">{{time.min}}</p>
+        <div class="schedule-block-div-left">
+          <input class="schedule-block-input">
+        </div>
+      </td> 
+    </tr>
+   
+  </tbody>
+  <tbody class="schedule-body">
+    <tr ng-repeat="time in times">
+      <td class="schedule-block">
+        <p class="schedule-block-min text-right">{{time.min}}</p>
+        <div class="schedule-block-div-right">
+          <input class="schedule-block-input" ng-model="time.time">
+        </div>
+      </td>  
+      
+      <td ng-show="time.min == 00" rowspan="4" class="schedule-hour">
+        <p class="h">{{time.hour}}</p>
+        <p class="m">{{time.am}}</p>
+      </td>  
+      
+      <td class="schedule-block">
+        <p class="schedule-block-min text-left">{{time.min}}</p>
+        <div class="schedule-block-div-left">
+          <input class="schedule-block-input">
+        </div>
+      </td> 
+      <td class="schedule-block">
+        <p class="schedule-block-min text-right">{{time.min}}</p>
+        <div class="schedule-block-div-right">
+          <input class="schedule-block-input">
+        </div>
+      </td>  
+      
+      <td ng-show="time.min == 0" rowspan="4" class="schedule-hour">
+        <p class="h">{{time.hour}}</p>
+        <p class="m">{{time.am}}</p>
+      </td>  
+      
+      <td class="schedule-block">
+        <p class="schedule-block-min text-left">{{time.min}}</p>
+        <div class="schedule-block-div-left">
+          <input class="schedule-block-input">
+        </div>
+      </td> 
+      <td class="schedule-block">
+        <p class="schedule-block-min text-right">{{time.min}}</p>
+        <div class="schedule-block-div-right">
+          <input class="schedule-block-input">
+        </div>
+      </td>  
+      
+      <td ng-show="time.min == 0" rowspan="4" class="schedule-hour">
+        <p class="h">{{time.hour}}</p>
+        <p class="m">{{time.am}}</p>
+      </td>  
+      
+      <td class="schedule-block">
+        <p class="schedule-block-min text-left">{{time.min}}</p>
+        <div class="schedule-block-div-left">
+          <input class="schedule-block-input">
+        </div>
+      </td> 
+      <td class="schedule-block">
+        <p class="schedule-block-min text-right">{{time.min}}</p>
+        <div class="schedule-block-div-right">
+          <input class="schedule-block-input">
+        </div>
+      </td>  
+      
+      <td ng-show="time.min == 0" rowspan="4" class="schedule-hour">
+        <p class="h">{{time.hour}}</p>
+        <p class="m">{{time.am}}</p>
+      </td>  
+      
+      <td class="schedule-block">
+        <p class="schedule-block-min text-left">{{time.min}}</p>
+        <div class="schedule-block-div-left">
+          <input class="schedule-block-input">
+        </div>
+      </td> 
+    </tr>
+   
+  </tbody>
+</table>
 
+
+
+<!-- <div ng-repeat="(date, app) in appointments">
+  <h4>{{date}}</h4>
+    <pre ng-repeat="a in app">{{a | json}}</pre>
+</div>
 
 <table>
   <thead>
@@ -45,7 +207,7 @@
       </td>
     </tr>
   </tbody>
-</table>
+</table> -->
 
 
 <!-- Modal -->

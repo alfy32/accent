@@ -1,57 +1,65 @@
 angular.module('accent').factory('appointments',
   function ($http) {
+    var a = {
+      appointments: {}
+    };
 
-    function save(appointment) {
+    a.add = function (appointment) {
+      post(appointment);
+    };
+
+    a.update = function (appointment) {
+      post(appointment);
+    };
+
+    a.remove = function (appointment) {
+      delete a.appointments[appointment.date][appointment._id];
+
+      $http.delete('/appointments', appointment).then(function (resp) {
+        if(reps.data.success) {
+
+        }
+        else {
+          console.log('Failed to delete appointment: ', appointment);
+        }
+      })
+    };
+
+    function get(date) {
+      $http.get('/appointments/' + date).then(function (resp) {
+        if(resp.data.success) {
+          a.appointments[date] = {};
+
+          for(var i in resp.data.rows) {
+            var appointment = resp.data.rows[i];
+
+            a.appointments[date][appointment.id] = appointment.value;
+          }
+        }
+        else {
+          console.log("Cannot get appointments.");
+        }
+      });
+    }
+
+    function post(appointment) {
       $http.post('/appointments', appointment).then(function (resp) {
         if(resp.data.success) {
-          appointment.id = resp.data.id;
-        } else {
+          appointment._id = resp.data.id;
+          appointment._rev = resp.data.rev;
+
+          a.appointments[appointment.date][appointment._id] = appointment;
+        } 
+        else {
           console.log("Save appointment failed.");
         }
       });
     }
 
-    function get(cb) {
-      $http.get('/appointments').then(function (resp) {
-        cb(resp.data);
-      });
-    }
+    get('2014-01-06');
+    get('2014-01-07');
+    get('2014-01-08');
 
-
-
-
-
-    function set(foodItems, cb) {
-      $http.post('/foodItems', foodItems).then(function (resp) {
-        if(resp.data === "ok") {
-          cb("Saved Successfully.");
-        } else {
-          cb(resp);
-        }
-      });
-    }
-
-    function update(foodItem, cb) {
-      $http.put('/foodItem/'+foodItem._id, foodItem).then(function (resp) {
-        cb(resp.data);
-      })
-    }
-
-    function create(foodItem, cb) {
-      $http.post('/foodItem', foodItem).then(function (resp) {
-        cb(resp.data);
-      })
-    }
-
-    function remove(id, cb) {
-      $http.delete('/foodItem/' + id).then(function (resp) {
-        cb(resp.data);
-      })
-    }
-
-    return {
-      save: save,
-      get: get
-    };
+    return a;
   }
 );
