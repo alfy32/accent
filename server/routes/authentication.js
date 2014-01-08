@@ -11,8 +11,8 @@ var couchUrl = 'http://' + cc.host + ':' + cc.port + '/' + cc.db.users;
 module.exports = function(app) {
   app.post('/login', login);
   app.get('/logout', logout);
-  app.get('/user', app.mw.loggedIn, user);
-}
+  app.get('/user', /* app.mw.loggedIn, */ user);
+};
 
 function login(req, res) {
   var name = req.body.name;

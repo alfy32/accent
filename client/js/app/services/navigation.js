@@ -1,7 +1,13 @@
 var nav = [
   {
-    name: 'Schedule',
+    name: 'Login',
     url: '/',
+    ctrl: 'loginCtrl',
+    tmpl: 'views/login.html'
+  },
+  {
+    name: 'Schedule',
+    url: '/schedule',
     ctrl: 'scheduleCtrl',
     tmpl: 'views/schedule.html'
   },

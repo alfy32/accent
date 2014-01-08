@@ -11,14 +11,14 @@ var couchUrl = 'http://' + cc.host + ':' + cc.port + '/' + cc.db.appointments;
 module.exports = function (app) {
   app.get('/appointments/:date/:employee?', /*app.mw.loggedIn,*/ getAppointments);
   app.post('/appointments', postAppointment);
-  app.delete('/appointments', deleteAppointment)
+  app.delete('/appointments', deleteAppointment);
 };
 
 function getAppointments(req, res) {
   var employee = req.route.params.employee;
   var date = req.route.params.date;
 
-  if(!date) 
+  if(!date)
     return _fail(res, "Date is required in the url");
 
   var doc,key;
@@ -26,7 +26,7 @@ function getAppointments(req, res) {
   if(!employee) {
     doc = '_design/appointments/_view/date';
     key = '"' + date + '"';
-  } 
+  }
   else {
     doc = '_design/appointments/_view/employee-date';
     key = '["' + employee + '","' + date + '"]';
@@ -52,7 +52,7 @@ function postAppointment(req, res) {
   var appointment = req.body;
 
   request({
-    url: couchUrl, 
+    url: couchUrl,
     method: 'POST',
     json: appointment
   }, function (err, resp, body) {
@@ -80,7 +80,7 @@ function deleteAppointment(req, res) {
     return _fail(res, "body must have id and rev");
 
   request({
-    url: couchUrl + '/' + id + '?rev=' + rev, 
+    url: couchUrl + '/' + id + '?rev=' + rev,
     method: 'DELETE',
     json: {
       id: id,

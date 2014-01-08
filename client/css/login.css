@@ -1,0 +1,9 @@
+
+.login-form {
+  width: 250px;
+  margin: auto;
+}
+
+.error {
+  color: red;
+}

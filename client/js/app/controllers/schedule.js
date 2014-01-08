@@ -6,21 +6,21 @@ angular.module('accent').controller('scheduleCtrl',
     $scope.s = schedule.items;
 
    //  $scope.who = makeWho();
-  	// $scope.times = schedule.times;
-  	// $scope.employees = makeEmployees();
-  	// $scope.cols = makeCols($scope.employees);
-  	// $scope.schedule = makeSchedule($scope.employees, $scope.times, $scope);
+    // $scope.times = schedule.times;
+    // $scope.employees = makeEmployees();
+    // $scope.cols = makeCols($scope.employees);
+    // $scope.schedule = makeSchedule($scope.employees, $scope.times, $scope);
 
-  	// appointments.get(function (data) {
-  	// 	for(var key in data) {
-  	// 		if(data[key] && data[key].id) {
-  	// 			addAppointment($scope.schedule, data[key]);
-  	// 		}
-  	// 	}
-  	// });
+    // appointments.get(function (data) {
+    //  for(var key in data) {
+    //    if(data[key] && data[key].id) {
+    //      addAppointment($scope.schedule, data[key]);
+    //    }
+    //  }
+    // });
 
-  	// $scope.change = function(employee, time) {
-  	// 	var scheduleItem = $scope.schedule[employee][time.label];
+    // $scope.change = function(employee, time) {
+    //  var scheduleItem = $scope.schedule[employee][time.label];
 
    //    if(scheduleItem.taken && scheduleItem.child) {
    //      scheduleItem.label = 'x';
@@ -46,7 +46,7 @@ angular.module('accent').controller('scheduleCtrl',
    //        scheduleItem.taken = false;
    //      }
    //    }
-  	// };
+    // };
 
    //  $scope.enterBlur = function(employee, time) {
    //    var scheduleItem = $scope.schedule[employee][time.label];
@@ -129,7 +129,7 @@ function validTime(time) {
     time.match(/\d{2}:30/) ||
     time.match(/\d{2}:45/)
   ) && (
-    (time >= '08:00' && time < '13:00') || 
+    (time >= '08:00' && time < '13:00') ||
     (time >= '01:00' && time < '06:00')
   );
 }
@@ -179,87 +179,87 @@ function checkLabelForBlocks(scheduleItem) {
     blocks = +scheduleItem.appointment.blocks;
   }
 
-	var label = scheduleItem.label;
+  var label = scheduleItem.label;
 
-	if(label.match(/\b15\b/)) {  
-		label = label.replace(/\s+15\b|\b15\b/, '');
-		blocks = 1;
-	} else if(label.match(/\b30\b/)) {  
-		label = label.replace(/\s+30\b|\b30\b/, '');
-		blocks = 2;
-	} else if(label.match(/\b45\b/)) {  
+  if(label.match(/\b15\b/)) {
+    label = label.replace(/\s+15\b|\b15\b/, '');
+    blocks = 1;
+  } else if(label.match(/\b30\b/)) {
+    label = label.replace(/\s+30\b|\b30\b/, '');
+    blocks = 2;
+  } else if(label.match(/\b45\b/)) {
     label = label.replace(/\s+45\b|\b45\b/, '');
     blocks = 3;
-  } else if(label.match(/\b60\b/)) {  
+  } else if(label.match(/\b60\b/)) {
     label = label.replace(/\s+60\b|\b60\b/, '');
     blocks = 4;
-  } else if(label.match(/\bhr\b/)) { 
-		label = label.replace(/\s+hr\b|\bhr\b/, '');
-		blocks = 4;
-	} else if(label.match(/\b2hr\b/)) {  
-		label = label.replace(/\s+2hr\b|\b2hr\b/, '');
-		blocks = 8;
-	} else if(label === '') {
-		blocks = 0;
-	} 
+  } else if(label.match(/\bhr\b/)) {
+      label = label.replace(/\s+hr\b|\bhr\b/, '');
+    blocks = 4;
+  } else if(label.match(/\b2hr\b/)) {
+    label = label.replace(/\s+2hr\b|\b2hr\b/, '');
+    blocks = 8;
+  } else if(label === '') {
+    blocks = 0;
+  }
 
   scheduleItem.label = label;
-	return blocks;
+  return blocks;
 }
 
 function clearChildren(scheduleItem) {
-	if(scheduleItem.children) {
-		for(var key in scheduleItem.children) {
-			var child = scheduleItem.children[key];
+  if(scheduleItem.children) {
+    for(var key in scheduleItem.children) {
+      var child = scheduleItem.children[key];
 
-			child.label = '';
-			child.taken = false;
-  	}
-	}
+      child.label = '';
+      child.taken = false;
+    }
+  }
 
-	scheduleItem.children = [];
+  scheduleItem.children = [];
 }
 
 function addChildren(schedule, scheduleItem) {
   var appointment = scheduleItem.appointment;
-	var blocks = appointment.blocks;
-	var time = appointment.time.split(":");
-	var hour = +time[0];
-	var min = +time[1];
+  var blocks = appointment.blocks;
+  var time = appointment.time.split(":");
+  var hour = +time[0];
+  var min = +time[1];
 
   clearChildren(scheduleItem);
 
-	for(var i = 1; i < blocks; i++) {
-		min = min + 15;
-		if(min >= 60) {
-			min = 0;
-			hour++;
-			if(hour > 12)
-				hour = 1;
-		}
+  for(var i = 1; i < blocks; i++) {
+    min = min + 15;
+    if(min >= 60) {
+      min = 0;
+      hour++;
+      if(hour > 12)
+        hour = 1;
+    }
     
     time = getTimeLabel(hour, min);
-		var item = schedule[scheduleItem.employee][time];
+    var item = schedule[scheduleItem.employee][time];
 
-		if(item.taken === true) {
-			alert("You are trying to overlap another appointment. I will stop at " 
-					+ i + " appointment blocks. Instead of " + blocks + ".");
-		
-			appointment.blocks = i;
-			break;
-		} else {
+    if(item.taken === true) {
+      alert("You are trying to overlap another appointment. I will stop at " +
+        i + " appointment blocks. Instead of " + blocks + ".");
+    
+      appointment.blocks = i;
+      break;
+    } else {
 
-  		item.label = 'x';
-  		item.taken = true;
-  		item.child = true;
+      item.label = 'x';
+      item.taken = true;
+      item.child = true;
       item.parent = {
         employee: scheduleItem.employee,
         time: appointment.time
       };
 
-  		scheduleItem.children.push(item);
-    }    
-	}
+      scheduleItem.children.push(item);
+    }
+  }
 }
 
 function findWordsAfter15Chars(string) {
@@ -268,7 +268,7 @@ function findWordsAfter15Chars(string) {
   words = string.split(' ');
   
   var finalWords = [];
-  var string = '';
+  string = '';
   
   for(var key in words) {
     if(words[key].length + string.length > maxLength) {
@@ -305,7 +305,7 @@ function addAppointment(schedule, appointment) {
 
     if(labelArray.length > 1) {
       for(var index in labelArray) {
-        if(index == 0) {
+        if(index === 0) {
           scheduleItem.label = labelArray[index];
         } else {
           if(scheduleItem.children[index-1]) {
@@ -337,16 +337,16 @@ function removeScheduleItem(schedule, scheduleItem) {
 }
 
 function getTimeLabel(hour, min) {
-	return pad2Digits(hour) + ":" + pad2Digits(min);
+  return pad2Digits(hour) + ":" + pad2Digits(min);
 }
 
 function pad2Digits(num) {
-	num = +num;
-	return num < 10 ? "0" + num : "" + num;
+  num = +num;
+  return num < 10 ? "0" + num : "" + num;
 }
 
 function makeSchedule(employees, times, scope) {
-	schedule = {};
+  schedule = {};
 
   angular.forEach(employees, function (employee, key) {
     schedule[employee.name] = {};
@@ -359,7 +359,7 @@ function makeSchedule(employees, times, scope) {
 }
 
 function makeTimes() {
-	var times = [];
+  var times = [];
   var min = ['00','15','30','45'];
 
   function timesLoops(times, start, end, am) {
@@ -376,37 +376,37 @@ function makeTimes() {
     }
   }
 
-	timesLoops(times, 8, 11, 'AM');
-	timesLoops(times, 12, 12, 'PM');
-	timesLoops(times, 1, 5, 'PM');
+  timesLoops(times, 8, 11, 'AM');
+  timesLoops(times, 12, 12, 'PM');
+  timesLoops(times, 1, 5, 'PM');
 
   return times;
 }
 
 
 function makeEmployees() {
-	return [
-		{ name: 'Jill'    },
-		{ name: 'Mary'    },
-		{ name: 'Marva'   },
-		{ name: 'Sindy'   },
-		{ name: ''        },
-		{ name: ''        },
-		{ name: 'Kortney' },
-		{ name: ''        }
-	];
+  return [
+    { name: 'Jill'    },
+    { name: 'Mary'    },
+    { name: 'Marva'   },
+    { name: 'Sindy'   },
+    { name: ''        },
+    { name: ''        },
+    { name: 'Kortney' },
+    { name: ''        }
+  ];
 }
 
 function makeCols(employees) {
-	var cols = [];
+  var cols = [];
 
-	for(var i = 0; i < 8; i++) {
-		cols.push({
-			employee: employees[i].name
-		});
-	}
+  for(var i = 0; i < 8; i++) {
+    cols.push({
+      employee: employees[i].name
+    });
+  }
 
-	return cols;
+  return cols;
 }
 
 
